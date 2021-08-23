@@ -2,6 +2,8 @@ package com.example.MessagesApiRest.Controller;
 
 import com.example.MessagesApiRest.Domain.User;
 import com.example.MessagesApiRest.Service.UserService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -18,26 +20,15 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/")
-    public String index (){
-        return "index.html";
-    }
 
-    @GetMapping("/login")
-    public String registrationForm(Model model){
-        model.addAttribute("user", new User());
-        return "login.html";
-    }
+
 
     @PostMapping("/login")
-    public String singIn(@Valid @ModelAttribute User user, BindingResult result, Model model){
-        if (result.hasErrors()){
-            return "redirect:/login.html";
-        }
-        else{
-            model.addAttribute("user", userService.singIn(user));
-        }
-        return "redirect:/index.html";
+    public ResponseEntity<User> SingIn (@Valid @RequestBody User user){
+        userService.singIn(user);
+
+        return new ResponseEntity<User>(HttpStatus.CREATED);
+
 
     }
 
