@@ -3,15 +3,10 @@ package com.example.MessagesApiRest.Domain;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
+
+@Data
 @Entity
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@EqualsAndHashCode
 @Table(name = "message")
 public  class Message {
 

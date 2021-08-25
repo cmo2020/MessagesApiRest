@@ -1,6 +1,6 @@
 package com.example.MessagesApiRest.Security;
 
-import com.example.MessagesApiRest.Service.UserService;
+import com.example.MessagesApiRest.Service.CustomUserDetailsService;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,42 +18,39 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 
     private final PasswordConfig passwordConfig;
-    private final UserService userService;
+    private final CustomUserDetailsService registerService;
 
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
-        http
 
+        http
                 .csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/", "/public/**","/css/**", "/js/**")
                 .permitAll()
                 .anyRequest()
                 .authenticated().and()
-                .formLogin()
-                .loginPage("/login")
-                .defaultSuccessUrl("/index", true)
-                .failureUrl("/login?error=true")
-                .and()
-                .logout()
-                .logoutUrl("/logout").logoutSuccessUrl("/index");
+                .formLogin();
 
 
     }
 
-    @Bean
-    public DaoAuthenticationProvider authenticationProvider() {
-        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-        authProvider.setUserDetailsService(userDetailsService());
-        authProvider.setPasswordEncoder(passwordConfig);
-
-        return authProvider;
-    }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.authenticationProvider(authenticationProvider());
+        auth.authenticationProvider(daoAuthenticationProvider());
+    }
+
+    @Bean
+    public DaoAuthenticationProvider daoAuthenticationProvider() {
+        DaoAuthenticationProvider provider =
+                new DaoAuthenticationProvider();
+        provider.setPasswordEncoder(passwordConfig);
+        provider.setUserDetailsService(registerService);
+        return provider;
+    }
+
     }
 
 
@@ -64,4 +61,3 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 
 
-}

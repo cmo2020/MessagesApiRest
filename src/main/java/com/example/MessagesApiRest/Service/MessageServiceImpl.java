@@ -2,26 +2,27 @@ package com.example.MessagesApiRest.Service;
 
 import com.example.MessagesApiRest.Domain.Message;
 import com.example.MessagesApiRest.Repository.MessageRepository;
+import com.example.MessagesApiRest.Repository.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
-public class MessageService {
+public class MessageServiceImpl {
 
 
     private final MessageRepository messageRepository;
+    private final UserRepository userRepository;
 
-    public MessageService(MessageRepository messageRepository) {
+    public MessageServiceImpl(MessageRepository messageRepository, UserRepository userRepository) {
         this.messageRepository = messageRepository;
-    }
-
-
-    public  Message sendMessage(Message message){
-    this.sendMessage(message);
-        return message;
-    }
+        this.userRepository = userRepository;
     }
 
 
 
+
+
+}
 
 

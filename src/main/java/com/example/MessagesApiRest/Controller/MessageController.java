@@ -1,7 +1,6 @@
 package com.example.MessagesApiRest.Controller;
 
-import com.example.MessagesApiRest.Service.MessageService;
-import org.springframework.stereotype.Controller;
+import com.example.MessagesApiRest.Service.MessageServiceImpl;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -9,9 +8,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("message")
 public class MessageController {
 
-    private final MessageService messageService;
+    private final MessageServiceImpl messageService;
 
-    public MessageController(MessageService messageService) {
+    public MessageController(MessageServiceImpl messageService) {
         this.messageService = messageService;
     }
 }
