@@ -1,10 +1,12 @@
 package messagesApiRest.Service;
 
+import messagesApiRest.Domain.Label;
 import messagesApiRest.Domain.Message;
 import messagesApiRest.Repository.LabelRepository;
 import messagesApiRest.Repository.MessageRepository;
 import messagesApiRest.Repository.UserRepository;
 import messagesApiRest.ServiceInterface.MessageService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,6 +20,8 @@ public class MessageServiceImpl  implements MessageService {
     private final UserRepository userRepository;
     private final LabelRepository labelRepository;
 
+
+    @Autowired
     public MessageServiceImpl(MessageRepository messageRepository, UserRepository userRepository, LabelRepository labelRepository) {
         this.messageRepository = messageRepository;
         this.userRepository = userRepository;
@@ -34,4 +38,6 @@ public class MessageServiceImpl  implements MessageService {
        return list;
 
 }
+
+
 }

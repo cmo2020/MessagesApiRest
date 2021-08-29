@@ -1,6 +1,7 @@
 package messagesApiRest.Domain;
 
 import lombok.*;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
@@ -38,20 +39,21 @@ public class User {
      private String address;
      @Column
      @NotNull(message = "Zip Code is required")
-     private int zipCode;
+     private Integer zipcode;
      @Column(nullable = false,  length = 10)
      @NotEmpty(message = "Country is required")
      private String country;
      @Column(nullable = false, length = 10)
      @NotEmpty(message = "State is required")
      private String state;
-     @Column(nullable = false,  length = 10)
+     @Column(nullable = false)@Lob
      @NotEmpty(message = "Password is required")
      private String password;
 
 
      @Enumerated(EnumType.STRING)
-     private Rol rol;
+     private Role role;
+
 
 
      @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")

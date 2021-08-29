@@ -1,9 +1,18 @@
 package messagesApiRest.ServiceInterface;
 
 import messagesApiRest.Domain.User;
+import org.springframework.security.core.Authentication;
+
+import java.util.List;
+
 
 public interface UserService {
 
 
-    public User singIn (User user);
+    User singUp ( User user);
+    void deleteUser(Long id);
+     List<User> listUsers();
+
+
+
 }

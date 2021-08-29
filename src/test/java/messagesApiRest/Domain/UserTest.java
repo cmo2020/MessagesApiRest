@@ -73,8 +73,8 @@ class UserTest {
     void testGetZipCode() {
         int zipCode = 5000;
 
-        user.setZipCode(zipCode);
-        assertEquals(zipCode, user.getZipCode());
+        user.setZipcode(zipCode);
+        assertEquals(zipCode, user.getZipcode());
     }
 
     @Test
@@ -115,7 +115,7 @@ class UserTest {
 
 
     @Test
-    void testSetUserName() {
+    void testSetUsername() {
         String userName = "username";
         User instance = new User ();
         instance.setUserName(userName);
@@ -167,9 +167,9 @@ class UserTest {
     void testSetZipCode() {
         int zipCode = 5000;
         User instance = new User ();
-        instance.setZipCode(zipCode);
+        instance.setZipcode(zipCode);
 
-        assertEquals(instance.getZipCode(), zipCode);
+        assertEquals(instance.getZipcode(), zipCode);
     }
 
     @Test
