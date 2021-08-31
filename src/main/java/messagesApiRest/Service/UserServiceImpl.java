@@ -4,16 +4,15 @@ import messagesApiRest.Domain.User;
 
 import messagesApiRest.Exception.ExceptionEmailExists;
 import messagesApiRest.Repository.UserRepository;
-import messagesApiRest.ServiceInterface.UserService;
+import messagesApiRest.ServiceInterface.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl implements IUserService {
 
 
     private final UserRepository userRepository;
@@ -52,11 +51,6 @@ public class UserServiceImpl implements UserService {
     }
 
 
-    @Override
-    public List<User> listUsers() {
-
-        return (List<User>) userRepository.findAll();
-    }
 
     public User findByUserName(String userName){
 
@@ -69,6 +63,8 @@ public class UserServiceImpl implements UserService {
 
 
     }
+
+
 
 
 

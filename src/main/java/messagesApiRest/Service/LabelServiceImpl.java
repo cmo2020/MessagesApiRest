@@ -1,18 +1,14 @@
 package messagesApiRest.Service;
 
 import messagesApiRest.Domain.Label;
-import messagesApiRest.Domain.Message;
 import messagesApiRest.Repository.LabelRepository;
 import messagesApiRest.Repository.MessageRepository;
-import messagesApiRest.ServiceInterface.LabelService;
+import messagesApiRest.ServiceInterface.ILabelService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-import java.util.Set;
-
 @Service
-public class LabelServiceImpl implements LabelService {
+public class LabelServiceImpl implements ILabelService {
 
     LabelRepository labelRepository;
     MessageRepository messageRepository;
@@ -43,8 +39,6 @@ public class LabelServiceImpl implements LabelService {
     }
 
 
-    @Override
-    public void addLabel(Label label) {;
 
-    }
+
     }

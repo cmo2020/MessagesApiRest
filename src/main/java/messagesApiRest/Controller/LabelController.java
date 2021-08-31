@@ -1,7 +1,7 @@
 package messagesApiRest.Controller;
 
 import messagesApiRest.Domain.Label;
-import messagesApiRest.ServiceInterface.LabelService;
+import messagesApiRest.ServiceInterface.ILabelService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,11 +11,12 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("label")
 public class LabelController {
 
-    private LabelService labelService;
+    private ILabelService labelService;
     @Autowired
-    public LabelController(LabelService labelService) {
+    public LabelController(ILabelService labelService) {
         this.labelService = labelService;
     }
+
 
 
     @PostMapping("/create")
@@ -37,10 +38,6 @@ public class LabelController {
         return new ResponseEntity<Label>(HttpStatus.OK);
     }
 
-    @PostMapping("/add")
-    public  void addLabel(@RequestBody Label label){
-        labelService.addLabel(label);
 
 
-    }
 }

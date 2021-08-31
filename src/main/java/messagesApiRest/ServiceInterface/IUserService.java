@@ -6,12 +6,12 @@ import org.springframework.security.core.Authentication;
 import java.util.List;
 
 
-public interface UserService {
+public interface IUserService {
 
 
     User singUp ( User user);
     void deleteUser(Long id);
-     List<User> listUsers();
+
 
 
 

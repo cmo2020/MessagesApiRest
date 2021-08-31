@@ -23,12 +23,6 @@ public class UserController {
     }
 
 
-    @GetMapping("/listUser")
-    public List<User> listUsers() {
-        return userService.listUsers();
-    }
-
-
 
     @PostMapping("/singUp")
     public ResponseEntity<String> singUp(@Valid @RequestBody User user) {
