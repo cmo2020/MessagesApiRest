@@ -5,6 +5,7 @@ import messagesApiRest.Domain.Message;
 import messagesApiRest.Domain.User;
 import messagesApiRest.Service.MessageServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -46,8 +47,13 @@ public class MessageController {
     }
 
     @GetMapping("/receivedMessages")
-    public List<Message>  receivedMessages(User user, Message message){
-        return  messageService.receivedMessages(user, message);
+    public Page<Message>   receivedMessages(User user, Message message, Pageable pageable){
+        return  messageService.receivedMessages(user, message, pageable);
 
     }
+
+    @GetMapping("/sentMessages")
+    public Page<Message> sentMessages(User user, Message message, Pageable pageable){
+        return  messageService.sentMessages(user, message, pageable);
+}
 }

@@ -9,6 +9,8 @@ import messagesApiRest.Repository.UserRepository;
 import messagesApiRest.Security.CustomUserDetails;
 import messagesApiRest.ServiceInterface.IMessageService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.support.PagedListHolder;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -56,7 +58,7 @@ public class MessageServiceImpl  implements IMessageService {
             newMessage.setBcc(message.getBcc());
             newMessage.setBody(message.getBody());
             newMessage.setAttachment(message.getAttachment());
-            return messageRepository.save(message);
+            return messageRepository.save(newMessage);
         }
         return message;
     }
@@ -68,22 +70,28 @@ public class MessageServiceImpl  implements IMessageService {
     }
 
 
-
     @Override
-    public List<Message> receivedMessages(User user, Message message) {
+    public Page<Message> receivedMessages(User user, Message message, Pageable pageable) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Object principal = authentication.getPrincipal();
         if (principal instanceof CustomUserDetails) {
             String userEmail = ((CustomUserDetails) principal).getEmail(user.getEmail());
-            return messageRepository.findByRecipient(userEmail);
+            return messageRepository.findByRecipient(userEmail, pageable);
 
-        }
-        else return  Collections.emptyList();
-
-           }
+        } else return Page.empty();
 
     }
 
+    @Override
+    public Page<Message>  sentMessages(User user, Message message, Pageable pageable) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Object principal = authentication.getPrincipal();
+        if (principal instanceof CustomUserDetails) {
+            String userEmail = ((CustomUserDetails) principal).getEmail(user.getEmail());
+            return messageRepository.findBySender(userEmail, pageable);
+
+        } else return Page.empty();
+    }
 
 
-
+}

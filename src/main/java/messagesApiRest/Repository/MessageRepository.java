@@ -20,7 +20,10 @@ public interface MessageRepository extends JpaRepository <Message, Long> {
 
 
     @Query(value = "SELECT * FROM message WHERE recipient OR bcc OR cc IN(SELECT email FROM user)ORDER BY date DESC", nativeQuery = true)
-    List<Message> findByRecipient(String email);
+    Page<Message> findByRecipient(String email, Pageable pageable);
+
+    @Query(value = "SELECT * FROM message WHERE derive_from IN(SELECT email FROM user)ORDER BY date DESC", nativeQuery = true)
+    Page<Message> findBySender(String email, Pageable pageable);
 
 
 
