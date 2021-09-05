@@ -1,7 +1,6 @@
 package messagesApiRest.Service;
 
 import messagesApiRest.Domain.Message;
-import messagesApiRest.ServiceInterface.IEmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.mail.MailException;
@@ -46,7 +45,7 @@ public class EmailServiceImpl implements IEmailService {
     public void sendMessageWithAttachment(Message message) {
         try {
             MimeMessage msg = emailSender.createMimeMessage();
-            // pass 'true' to the constructor to create a multipart message
+
             MimeMessageHelper helper = new MimeMessageHelper(msg, true);
 
             helper.setFrom(EMAIL_ADDRESS);

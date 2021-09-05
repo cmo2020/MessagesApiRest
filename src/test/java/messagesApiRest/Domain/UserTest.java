@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class UserTest {
 
-    User user;
+    private User user;
 
     @BeforeEach
     public void setUp(){
@@ -27,7 +27,6 @@ class UserTest {
     void testGetUserName() {
 
         String userName = "coyarzabal";
-
 
         user.setUserName(userName);
         assertEquals(userName, user.getUserName());

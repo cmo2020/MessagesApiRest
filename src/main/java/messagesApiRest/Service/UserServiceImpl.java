@@ -4,21 +4,20 @@ import messagesApiRest.Domain.User;
 
 import messagesApiRest.Exception.ExceptionEmailExists;
 import messagesApiRest.Repository.UserRepository;
-import messagesApiRest.ServiceInterface.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
+
+
 
 @Service
 public class UserServiceImpl implements IUserService {
 
 
-    private final UserRepository userRepository;
+    private  UserRepository userRepository;
 
-    private final   BCryptPasswordEncoder bCryptPasswordEncoder;
-
+    private   BCryptPasswordEncoder bCryptPasswordEncoder;
     @Autowired
     public UserServiceImpl(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.userRepository = userRepository;
@@ -27,12 +26,17 @@ public class UserServiceImpl implements IUserService {
 
     }
 
+    public UserServiceImpl(UserRepository userRepository) {
+    }
+
+    public User findByEmail (String mail){
+     return  userRepository.findByEmail(mail);
+    }
     @Override
     public User singUp( User user ){
+    User userNew = userRepository.findByEmail(user.getEmail());
 
-    boolean userEmailExists = userRepository.findByEmail(user.getEmail())
-            .isPresent();
-       if(userEmailExists){
+       if(userNew!= null){
 
             throw new ExceptionEmailExists("Email already exists");
         }
@@ -44,28 +48,5 @@ public class UserServiceImpl implements IUserService {
     }
 
 
-    @Override
-    public void deleteUser(Long id)  {
-        User user = userRepository.getUserById(id);
-       userRepository.delete(user);
-    }
 
-
-
-    public User findByUserName(String userName){
-
-        return userRepository.findByUserName(userName);
-
-    }
-
-    public Optional<User> findByEmail(String email){
-       return userRepository.findByEmail(email);
-
-
-    }
-
-
-
-
-
-    }
+}

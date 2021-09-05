@@ -1,23 +1,22 @@
 package messagesApiRest.Service;
 
+
 import messagesApiRest.Domain.Label;
 import messagesApiRest.Domain.Message;
 import messagesApiRest.Domain.User;
+
 import messagesApiRest.Repository.LabelRepository;
 import messagesApiRest.Repository.MessageRepository;
 import messagesApiRest.Repository.UserRepository;
 import messagesApiRest.Security.CustomUserDetails;
-import messagesApiRest.ServiceInterface.IMessageService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.support.PagedListHolder;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.Optional;
+
 
 @Service
 public class MessageServiceImpl  implements IMessageService {
@@ -36,14 +35,6 @@ public class MessageServiceImpl  implements IMessageService {
     }
 
 
-    @Override
-    public List<Message> filterByLabel(String labelName) {
-
-        List<Message> list = messageRepository.findAll().stream()
-                .filter(message -> message.getLabel().equals(labelName)).collect(Collectors.toList());
-        return list;
-
-    }
 
     @Override
     public Message createMessage(Message message) {
@@ -64,34 +55,68 @@ public class MessageServiceImpl  implements IMessageService {
     }
 
 
-    @Override
-    public Message addLabel(Label label, Long id) {
-        return messageRepository.getById(id).addLabel(label);
+
+
+
+    public Object receivedMessages(User user, Message message, Pageable pageable) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Object principal = authentication.getPrincipal();
+        if (principal instanceof CustomUserDetails) {
+
+            String userEmail = ((CustomUserDetails) principal).getEmail(user.getEmail());
+           return messageRepository.findByRecipient(message, pageable)
+                   .stream().filter(message1 -> message1.getBcc().equals(userEmail)
+                           ||  message1.getRecipient().equals(userEmail)
+                                || message1.getCc().equals(userEmail));
+
+
+            }
+                    
+            else   return "unauthorized";
+
     }
 
-
     @Override
-    public Page<Message> receivedMessages(User user, Message message, Pageable pageable) {
+    public Object  sentMessages(User user, Message message, Pageable pageable) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Object principal = authentication.getPrincipal();
         if (principal instanceof CustomUserDetails) {
             String userEmail = ((CustomUserDetails) principal).getEmail(user.getEmail());
-            return messageRepository.findByRecipient(userEmail, pageable);
+            return messageRepository.findByRecipient(message, pageable)
+                    .stream().filter(message1 -> message1.getDeriveFrom().equals(userEmail));
 
-        } else return Page.empty();
-
+        } else return "unauthorized";
     }
 
     @Override
-    public Page<Message>  sentMessages(User user, Message message, Pageable pageable) {
+    public Object filterByLabel(Message message, Long idLabel,  Pageable pageable) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Object principal = authentication.getPrincipal();
         if (principal instanceof CustomUserDetails) {
-            String userEmail = ((CustomUserDetails) principal).getEmail(user.getEmail());
-            return messageRepository.findBySender(userEmail, pageable);
 
-        } else return Page.empty();
+            Optional<Label> labelOptional = labelRepository.findById(idLabel);
+             Label labels = labelOptional.get();
+        return   messageRepository.filterByLabel(idLabel, pageable).stream()
+                .filter(message1 -> message1.getLabel().equals(labels));
+
+
+
+        }
+        return "unauthorized";
+    }
+
+    @Override
+    public String deleteMessage (Long id) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Object principal = authentication.getPrincipal();
+        if (principal instanceof CustomUserDetails) {
+            messageRepository.deleteById(id);
+            return "Message removed";
+
+        }
+        return "unauthorized";
+    }
+
     }
 
 
-}

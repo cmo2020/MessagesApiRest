@@ -1,4 +1,4 @@
-package messagesApiRest.ServiceInterface;
+package messagesApiRest.Service;
 
 import messagesApiRest.Domain.Message;
 

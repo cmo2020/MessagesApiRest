@@ -1,17 +1,16 @@
 package messagesApiRest.Repository;
 
+
+import messagesApiRest.Domain.Label;
 import messagesApiRest.Domain.Message;
-import messagesApiRest.Domain.User;
-import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
+
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 
 
 @Repository
@@ -20,11 +19,13 @@ public interface MessageRepository extends JpaRepository <Message, Long> {
 
 
     @Query(value = "SELECT * FROM message WHERE recipient OR bcc OR cc IN(SELECT email FROM user)ORDER BY date DESC", nativeQuery = true)
-    Page<Message> findByRecipient(String email, Pageable pageable);
+    Page <Message> findByRecipient(Message message, Pageable pageable);
 
     @Query(value = "SELECT * FROM message WHERE derive_from IN(SELECT email FROM user)ORDER BY date DESC", nativeQuery = true)
     Page<Message> findBySender(String email, Pageable pageable);
 
+    @Query(value = "SELECT * FROM message WHERE label_id IN (SELECT label_id FROM label) ORDER BY date DESC", nativeQuery = true)
+    Page<Message> filterByLabel (Long labelId, Pageable pageable);
 
 
 

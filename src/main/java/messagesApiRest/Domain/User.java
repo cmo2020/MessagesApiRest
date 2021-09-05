@@ -1,7 +1,7 @@
 package messagesApiRest.Domain;
 
 import lombok.*;
-import org.springframework.security.core.userdetails.UserDetails;
+
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
@@ -11,7 +11,10 @@ import java.util.HashSet;
 import java.util.Set;
 
 
-@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
 @Entity
 @Table(name = "user")
 public class User {

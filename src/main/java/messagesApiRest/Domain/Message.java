@@ -2,16 +2,17 @@ package messagesApiRest.Domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
-import org.springframework.format.annotation.DateTimeFormat;
+
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 
 
-@Data
+
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
 @Entity
 @Table(name = "message")
 public  class Message {
@@ -39,19 +40,15 @@ public  class Message {
     private LocalDateTime date;
 
 
+    @ManyToOne
+    private Label label;
 
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "message" )
-    private Set<Label> label = new HashSet<>();
 
     @ManyToOne
     private User user;
 
 
-    public Message addLabel(Label label) {
-        label.setMessage(this);
-        this.label.add(label);
-        return  this;
-    }
+
+
 }
 

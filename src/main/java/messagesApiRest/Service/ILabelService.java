@@ -1,13 +1,23 @@
-package messagesApiRest.ServiceInterface;
+package messagesApiRest.Service;
 
 import messagesApiRest.Domain.Label;
-import messagesApiRest.Domain.Message;
+
 
 public interface ILabelService {
 
     Label createLabel(Label label);
+
     Label editLabel(String labelName, Label label);
-    String removeLabel(String labelName);
+
+    String removeLabel(Long id);
+
+    Object addLabel(Long labelId, Long messageId);
+
+
+
+
+
+
 
 
 }

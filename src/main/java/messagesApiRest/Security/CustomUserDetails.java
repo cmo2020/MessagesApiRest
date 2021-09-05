@@ -2,11 +2,13 @@ package messagesApiRest.Security;
 
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import messagesApiRest.Domain.Label;
+import messagesApiRest.Domain.Message;
 import messagesApiRest.Domain.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Component;
+
 
 import java.util.*;
 
@@ -56,4 +58,6 @@ public class CustomUserDetails implements UserDetails {
     }
 
     public String getEmail(String email){ return  user.getEmail();}
+
+
 }
