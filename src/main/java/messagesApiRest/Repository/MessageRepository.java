@@ -22,7 +22,7 @@ public interface MessageRepository extends JpaRepository <Message, Long> {
     Page <Message> findByRecipient(Message message, Pageable pageable);
 
     @Query(value = "SELECT * FROM message WHERE derive_from IN(SELECT email FROM user)ORDER BY date DESC", nativeQuery = true)
-    Page<Message> findBySender(String email, Pageable pageable);
+    Page<Message> findBySender(Message message, Pageable pageable);
 
     @Query(value = "SELECT * FROM message WHERE label_id IN (SELECT label_id FROM label) ORDER BY date DESC", nativeQuery = true)
     Page<Message> filterByLabel (Long labelId, Pageable pageable);

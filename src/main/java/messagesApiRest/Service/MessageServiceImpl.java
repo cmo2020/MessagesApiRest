@@ -7,15 +7,20 @@ import messagesApiRest.Domain.User;
 
 import messagesApiRest.Repository.LabelRepository;
 import messagesApiRest.Repository.MessageRepository;
-import messagesApiRest.Repository.UserRepository;
 import messagesApiRest.Security.CustomUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import static com.jayway.jsonpath.Filter.filter;
 
 
 @Service
@@ -23,14 +28,13 @@ public class MessageServiceImpl  implements IMessageService {
 
 
     private final MessageRepository messageRepository;
-    private final UserRepository userRepository;
     private final LabelRepository labelRepository;
 
 
     @Autowired
-    public MessageServiceImpl(MessageRepository messageRepository, UserRepository userRepository, LabelRepository labelRepository) {
+    public MessageServiceImpl(MessageRepository messageRepository, LabelRepository labelRepository) {
         this.messageRepository = messageRepository;
-        this.userRepository = userRepository;
+
         this.labelRepository = labelRepository;
     }
 
@@ -38,8 +42,7 @@ public class MessageServiceImpl  implements IMessageService {
 
     @Override
     public Message createMessage(Message message) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Object principal = authentication.getPrincipal();
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (principal instanceof CustomUserDetails) {
             Message newMessage = new Message();
             newMessage.setDeriveFrom(message.getDeriveFrom());
@@ -58,57 +61,55 @@ public class MessageServiceImpl  implements IMessageService {
 
 
 
-    public Object receivedMessages(User user, Message message, Pageable pageable) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Object principal = authentication.getPrincipal();
+    public Page<Message> receivedMessages(User user, Message message, Pageable pageable) {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (principal instanceof CustomUserDetails) {
 
             String userEmail = ((CustomUserDetails) principal).getEmail(user.getEmail());
-           return messageRepository.findByRecipient(message, pageable)
+            List<Message> messageStream =  messageRepository.findByRecipient(message, pageable)
                    .stream().filter(message1 -> message1.getBcc().equals(userEmail)
                            ||  message1.getRecipient().equals(userEmail)
-                                || message1.getCc().equals(userEmail));
+                                || message1.getCc().equals(userEmail)).collect(Collectors.toList());
 
+            return new PageImpl<Message>(messageStream);
 
             }
                     
-            else   return "unauthorized";
+            else   return Page.empty();
 
     }
 
     @Override
-    public Object  sentMessages(User user, Message message, Pageable pageable) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Object principal = authentication.getPrincipal();
+    public  Page<Message>   sentMessages(User user, Message message, Pageable pageable) {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (principal instanceof CustomUserDetails) {
             String userEmail = ((CustomUserDetails) principal).getEmail(user.getEmail());
-            return messageRepository.findByRecipient(message, pageable)
-                    .stream().filter(message1 -> message1.getDeriveFrom().equals(userEmail));
-
-        } else return "unauthorized";
+            List<Message> messageList = messageRepository.findBySender(message, pageable)
+                    .stream().filter(message1 -> message1.getDeriveFrom().equals(userEmail)).collect(Collectors.toList());
+                return  new PageImpl<Message>(messageList);
+        } else return Page.empty();
     }
 
     @Override
-    public Object filterByLabel(Message message, Long idLabel,  Pageable pageable) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Object principal = authentication.getPrincipal();
+    public Page<Message> filterByLabel(Message message, Long idLabel,  Pageable pageable) {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (principal instanceof CustomUserDetails) {
 
             Optional<Label> labelOptional = labelRepository.findById(idLabel);
              Label labels = labelOptional.get();
-        return   messageRepository.filterByLabel(idLabel, pageable).stream()
-                .filter(message1 -> message1.getLabel().equals(labels));
+             List<Message> messageList =  messageRepository.filterByLabel(idLabel, pageable).stream()
+                .filter(message1 -> message1.getLabel().equals(labels)).collect(Collectors.toList());
 
+                return new PageImpl<Message>(messageList);
 
 
         }
-        return "unauthorized";
+        return Page.empty();
     }
 
     @Override
     public String deleteMessage (Long id) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Object principal = authentication.getPrincipal();
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (principal instanceof CustomUserDetails) {
             messageRepository.deleteById(id);
             return "Message removed";

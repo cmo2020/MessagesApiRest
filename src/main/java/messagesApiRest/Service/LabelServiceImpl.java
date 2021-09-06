@@ -17,25 +17,27 @@ import java.util.*;
 @Service
 public class LabelServiceImpl implements ILabelService {
 
-    LabelRepository labelRepository;
-    MessageRepository messageRepository;
+
+     private LabelRepository labelRepository;
+
+     private MessageRepository messageRepository;
 
 
     @Autowired
-    public LabelServiceImpl(LabelRepository labelRepository, MessageRepository messageRepository) {
+    public LabelServiceImpl(MessageRepository messageRepository, LabelRepository labelRepository) {
         this.labelRepository = labelRepository;
         this.messageRepository = messageRepository;
 
     }
 
     public LabelServiceImpl(LabelRepository labelRepository) {
+
     }
 
 
     @Override
     public Label createLabel( Label label) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Object principal = authentication.getPrincipal();
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (principal instanceof CustomUserDetails) {
             Label labelEmail = new Label();
             labelEmail.setLabelName(label.getLabelName());
@@ -47,8 +49,7 @@ public class LabelServiceImpl implements ILabelService {
 
     @Override
     public Label editLabel(String labelName, Label label) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Object principal = authentication.getPrincipal();
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (principal instanceof CustomUserDetails) {
             Label labelValue = new Label();
             labelValue.setLabelName(label.getLabelName());
@@ -60,8 +61,7 @@ public class LabelServiceImpl implements ILabelService {
 
     @Override
     public String removeLabel(Long id) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Object principal = authentication.getPrincipal();
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (principal instanceof CustomUserDetails) {
              labelRepository.deleteById(id);
             return "Label removed";
@@ -72,8 +72,7 @@ public class LabelServiceImpl implements ILabelService {
 
     @Override
     public Object addLabel(Long labelId, Long messageId) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Object principal = authentication.getPrincipal();
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (principal instanceof CustomUserDetails) {
 
             Optional<Label> labelOptional = labelRepository.findById(labelId);

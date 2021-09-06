@@ -8,6 +8,7 @@ import messagesApiRest.Domain.User;
 import messagesApiRest.Service.MessageServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,7 +37,7 @@ public class MessageController {
     }
 
     @GetMapping("/receivedMessages")
-    public Object   receivedMessages(User user, Message message, Pageable pageable){
+    public Page<Message>  receivedMessages(User user, Message message, Pageable pageable){
       return messageService.receivedMessages(user, message, pageable);
 
 
@@ -44,12 +45,12 @@ public class MessageController {
     }
 
     @GetMapping("/sentMessages")
-    public Object sentMessages(User user, Message message, Pageable pageable){
+    public Page<Message> sentMessages(User user, Message message, Pageable pageable){
         return  messageService.sentMessages(user, message, pageable);
 }
 
     @GetMapping("/filterByLabel")
-    public Object filterByLabel (@RequestParam("idLabel") Message message,  Long idLabel , Pageable pageable){
+    public Page<Message> filterByLabel (@RequestParam("idLabel") Message message, Long idLabel , Pageable pageable){
         return messageService.filterByLabel(message, idLabel, pageable);
     }
 

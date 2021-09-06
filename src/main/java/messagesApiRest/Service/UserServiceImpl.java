@@ -18,20 +18,18 @@ public class UserServiceImpl implements IUserService {
     private  UserRepository userRepository;
 
     private   BCryptPasswordEncoder bCryptPasswordEncoder;
+
+
     @Autowired
     public UserServiceImpl(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.userRepository = userRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
-
-
     }
 
-    public UserServiceImpl(UserRepository userRepository) {
-    }
 
-    public User findByEmail (String mail){
-     return  userRepository.findByEmail(mail);
-    }
+
+
+
     @Override
     public User singUp( User user ){
     User userNew = userRepository.findByEmail(user.getEmail());
