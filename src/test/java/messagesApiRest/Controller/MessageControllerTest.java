@@ -12,6 +12,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,10 +35,19 @@ class MessageControllerTest {
     private Pageable pageableMock;
 
     @Mock
-    private  User user;
+    private Page<User> user;
 
     @Mock
-    private  Message message;
+    private  Page<Message> message;
+    @Mock
+     private PageImpl<Message> messagePage;
+
+    @Mock
+    private  User userNew;
+
+    @Mock
+    private Message messageNew;
+
 
 
 
@@ -48,8 +59,8 @@ class MessageControllerTest {
     @Test
     void testCreateMessage() {
 
-        ResponseEntity<Message> result = messageController.createMessage(message);
-        verify(messageService,times(1)).createMessage(message);
+        ResponseEntity<Message> result = messageController.createMessage(messageNew);
+        verify(messageService,times(1)).createMessage(messageNew);
         assertThat(result.getStatusCode()).isEqualTo(HttpStatus.CREATED);
 
 
@@ -58,9 +69,9 @@ class MessageControllerTest {
     @Test
     void testReceivedMessages() {
 
-      when(messageController.receivedMessages(user,message,pageableMock)).thenReturn(user, message, pageableMock);
-      Object result = messageController.receivedMessages(user, message,pageableMock);
-      verify(messageService, times(1)).receivedMessages(user, message,pageableMock);
+      when(messageController.receivedMessages(userNew, messageNew,pageableMock)).thenReturn(messagePage);
+       Object result = messageController.receivedMessages(userNew, messageNew,pageableMock);
+      verify(messageService, times(1)).receivedMessages(userNew, messageNew,pageableMock);
 
 
 
@@ -70,9 +81,9 @@ class MessageControllerTest {
     void testSentMessages() {
 
 
-        when(messageController.sentMessages(user,message,pageableMock)).thenReturn(user, message, pageableMock);
-        Object result = messageController.sentMessages(user, message,pageableMock);
-        verify(messageService, times(1)).sentMessages(user, message,pageableMock);
+        when(messageController.sentMessages(userNew,messageNew,pageableMock)).thenReturn(messagePage);
+        Object result = messageController.sentMessages(userNew, messageNew,pageableMock);
+        verify(messageService, times(1)).sentMessages(userNew, messageNew,pageableMock);
 
 
 
@@ -82,9 +93,9 @@ class MessageControllerTest {
     void testFilterByLabel() {
             Long labelId = 1L;
 
-        when(messageController.filterByLabel(message, labelId, pageableMock)).thenReturn(message, labelId, pageableMock);
-        Object result = messageController.filterByLabel(message, labelId, pageableMock);
-        verify(messageService, times(1)).filterByLabel(message, labelId, pageableMock);
+        when(messageController.filterByLabel(messageNew, labelId, pageableMock)).thenReturn( messagePage);
+        Object result = messageController.filterByLabel(messageNew, labelId, pageableMock);
+        verify(messageService, times(1)).filterByLabel(messageNew, labelId, pageableMock);
 
 
 

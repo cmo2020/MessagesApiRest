@@ -5,9 +5,8 @@ import messagesApiRest.Domain.Label;
 
 public interface ILabelService {
 
-    Label createLabel(Label label);
+    Object createLabel(Label label);
 
-    Label editLabel(String labelName, Label label);
 
     String removeLabel(Long id);
 

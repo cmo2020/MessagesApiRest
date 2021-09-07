@@ -18,9 +18,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
-import static com.jayway.jsonpath.Filter.filter;
 
 
 @Service
@@ -42,23 +40,9 @@ public class MessageServiceImpl  implements IMessageService {
 
     @Override
     public Message createMessage(Message message) {
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (principal instanceof CustomUserDetails) {
-            Message newMessage = new Message();
-            newMessage.setDeriveFrom(message.getDeriveFrom());
-            newMessage.setSubject(message.getSubject());
-            newMessage.setRecipient(message.getRecipient());
-            newMessage.setCc(message.getCc());
-            newMessage.setBcc(message.getBcc());
-            newMessage.setBody(message.getBody());
-            newMessage.setAttachment(message.getAttachment());
-            return messageRepository.save(newMessage);
-        }
-        return message;
+        return messageRepository.save(message);
+
     }
-
-
-
 
 
     public Page<Message> receivedMessages(User user, Message message, Pageable pageable) {
@@ -92,8 +76,6 @@ public class MessageServiceImpl  implements IMessageService {
 
     @Override
     public Page<Message> filterByLabel(Message message, Long idLabel,  Pageable pageable) {
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (principal instanceof CustomUserDetails) {
 
             Optional<Label> labelOptional = labelRepository.findById(idLabel);
              Label labels = labelOptional.get();
@@ -103,19 +85,14 @@ public class MessageServiceImpl  implements IMessageService {
                 return new PageImpl<Message>(messageList);
 
 
-        }
-        return Page.empty();
     }
 
     @Override
     public String deleteMessage (Long id) {
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (principal instanceof CustomUserDetails) {
-            messageRepository.deleteById(id);
-            return "Message removed";
 
-        }
-        return "unauthorized";
+        messageRepository.deleteById(id);
+        return "Message removed";
+
     }
 
     }

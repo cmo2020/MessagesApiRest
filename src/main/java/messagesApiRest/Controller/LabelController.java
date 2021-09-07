@@ -20,20 +20,16 @@ public class LabelController {
 
 
     @PostMapping("/create")
-    public ResponseEntity<Label> createLabel(@RequestBody Label label) {
+    public Object createLabel(@RequestBody Label label) {
         labelService.createLabel(label);
-        return new ResponseEntity<Label>(HttpStatus.CREATED);
+        return  "label saved";
 
     }
 
-    @PutMapping("/edit")
-    public ResponseEntity<Label> editLabel(@RequestBody String labelName, Label label) {
-        labelService.editLabel(labelName, label);
-        return new ResponseEntity<Label>(HttpStatus.OK);
-    }
 
-    @DeleteMapping("/remove/{id}")
-    public String removeLabel(@PathVariable("id")@RequestBody Long id) {
+
+    @DeleteMapping("/remove")
+    public String removeLabel(@RequestParam("idLabel") Long id) {
         labelService.removeLabel(id);
         return  "label removed";
     }

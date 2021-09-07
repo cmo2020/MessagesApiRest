@@ -39,21 +39,13 @@ class LabelControllerTest {
     void testCreateLabel() {
         Set<Message> messageSet = new HashSet<>();
         Label label = new Label(1L,"important", messageSet );
-        ResponseEntity<Label> result = labelController.createLabel(label);
+        Object result = labelController.createLabel(label);
 
         verify(labelService, Mockito.times(1)).createLabel(label);
 
-        assertThat(result.getStatusCode()).isEqualTo(HttpStatus.CREATED);
+        assertThat(result).isEqualTo( "label:" +label+ " saved");
     }
 
-    @Test
-    void testEditLabel() {
-        Set<Message> messageSet = new HashSet<>();
-        Label label = new Label(1L,"important", messageSet );
-        when(labelService.editLabel("label",label)).thenReturn(label);
-        ResponseEntity<Label> result = labelController.editLabel("label", label);
-        assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
-    }
 
 
     @Test
