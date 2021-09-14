@@ -1,6 +1,9 @@
 package messagesApiRest.Service;
 
+import messagesApiRest.Domain.Bcc;
+import messagesApiRest.Domain.Cc;
 import messagesApiRest.Domain.Message;
+import messagesApiRest.Domain.Recipients;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.mail.MailException;
@@ -24,13 +27,13 @@ public class EmailServiceImpl implements IEmailService {
         this.emailSender = emailSender;
     }
 
-    public void sendSimpleMessage(Message message) {
+    public void sendSimpleMessage(Message message, Recipients recipients, Cc cc, Bcc bcc) {
         try {
             SimpleMailMessage msg = new SimpleMailMessage();
             msg.setFrom(EMAIL_ADDRESS);
-            msg.setTo(message.getRecipient());
-            msg.setCc(message.getCc());
-            msg.setBcc(message.getBcc());
+            msg.setTo(recipients.getRecipientOne());
+            msg.setCc(cc.getCcOne());
+            msg.setBcc(bcc.getBccOne());
             msg.setSubject(message.getSubject());
             msg.setText(message.getBody());
 
@@ -42,14 +45,14 @@ public class EmailServiceImpl implements IEmailService {
 
 
     @Override
-    public void sendMessageWithAttachment(Message message) {
+    public void sendMessageWithAttachment(Message message, Recipients recipients) {
         try {
             MimeMessage msg = emailSender.createMimeMessage();
 
             MimeMessageHelper helper = new MimeMessageHelper(msg, true);
 
             helper.setFrom(EMAIL_ADDRESS);
-            helper.setTo(message.getRecipient());
+            helper.setTo(recipients.getRecipientOne());
             helper.setSubject(message.getSubject());
             helper.setText(message.getBody());
 

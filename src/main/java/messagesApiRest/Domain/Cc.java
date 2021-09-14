@@ -1,33 +1,35 @@
 package messagesApiRest.Domain;
 
-import lombok.*;
-import org.hibernate.annotations.Cascade;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
-@Entity
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-@Table(name = "label")
-public class Label {
+@Entity
+@Table(name = "cc")
+public class Cc {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Column
-    private String labelName;
+    private String ccOne;
+    @Column
+    private String ccTwo;
+    @Column
+    private String ccThree;
 
 
 
-    @OneToMany(mappedBy = "label")
+    @OneToMany(mappedBy = "cc")
     private Set<Message> message = new HashSet<>();
-
-
-
-
-
 }

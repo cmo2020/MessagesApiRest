@@ -31,7 +31,7 @@ public class UserServiceImpl implements IUserService {
 
 
     @Override
-    public User singUp( User user ){
+    public User signUp( User user ){
     User userNew = userRepository.findByEmail(user.getEmail());
 
        if(userNew!= null){
@@ -45,6 +45,10 @@ public class UserServiceImpl implements IUserService {
 
     }
 
+    @Override
+    public User signIn(User user) {
+        return null;
+    }
 
 
 }

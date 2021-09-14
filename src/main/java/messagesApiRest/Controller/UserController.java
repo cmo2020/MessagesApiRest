@@ -11,6 +11,7 @@ import javax.validation.Valid;
 
 
 @RestController
+@RequestMapping("user")
 public class UserController {
 
     private final UserServiceImpl userService;
@@ -22,9 +23,9 @@ public class UserController {
 
 
 
-    @PostMapping("/singUp")
-    public ResponseEntity<String> singUp(@Valid @RequestBody User user) {
-        userService.singUp(user);
+    @PostMapping
+    public ResponseEntity<String> signUp(@Valid @RequestBody User user) {
+        userService.signUp(user);
          return new ResponseEntity<String>(HttpStatus.CREATED);
 
     }

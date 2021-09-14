@@ -69,21 +69,11 @@ class MessageControllerTest {
     @Test
     void testReceivedMessages() {
 
-      when(messageController.receivedMessages(userNew, messageNew,pageableMock)).thenReturn(messagePage);
-       Object result = messageController.receivedMessages(userNew, messageNew,pageableMock);
-      verify(messageService, times(1)).receivedMessages(userNew, messageNew,pageableMock);
-
-
 
     }
 
     @Test
     void testSentMessages() {
-
-
-        when(messageController.sentMessages(userNew,messageNew,pageableMock)).thenReturn(messagePage);
-        Object result = messageController.sentMessages(userNew, messageNew,pageableMock);
-        verify(messageService, times(1)).sentMessages(userNew, messageNew,pageableMock);
 
 
 
@@ -92,10 +82,6 @@ class MessageControllerTest {
     @Test
     void testFilterByLabel() {
             Long labelId = 1L;
-
-        when(messageController.filterByLabel(messageNew, labelId, pageableMock)).thenReturn( messagePage);
-        Object result = messageController.filterByLabel(messageNew, labelId, pageableMock);
-        verify(messageService, times(1)).filterByLabel(messageNew, labelId, pageableMock);
 
 
 

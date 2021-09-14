@@ -19,7 +19,7 @@ public class LabelController {
     }
 
 
-    @PostMapping("/create")
+    @PostMapping
     public Object createLabel(@RequestBody Label label) {
         labelService.createLabel(label);
         return  "label saved";
@@ -28,7 +28,7 @@ public class LabelController {
 
 
 
-    @DeleteMapping("/remove")
+    @DeleteMapping
     public String removeLabel(@RequestParam("idLabel") Long id) {
         labelService.removeLabel(id);
         return  "label removed";

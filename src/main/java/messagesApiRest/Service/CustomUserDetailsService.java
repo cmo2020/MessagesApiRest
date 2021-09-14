@@ -12,6 +12,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import org.springframework.stereotype.Service;
 
+import static java.util.Collections.emptyList;
+
 
 @Service
 @NoArgsConstructor
@@ -30,7 +32,7 @@ public class CustomUserDetailsService implements org.springframework.security.co
         if (user == null) {
             throw new UsernameNotFoundException("User name not found:"+ userName);
         }
-        return new CustomUserDetails(user);
+        return new org.springframework.security.core.userdetails.User(user.getUserName(), user.getPassword(), emptyList());
     }
 
 

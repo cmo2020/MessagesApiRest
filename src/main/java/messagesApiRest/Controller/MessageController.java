@@ -2,8 +2,7 @@ package messagesApiRest.Controller;
 
 
 
-import messagesApiRest.Domain.Message;
-import messagesApiRest.Domain.User;
+import messagesApiRest.Domain.*;
 
 import messagesApiRest.Service.MessageServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,26 +29,26 @@ public class MessageController {
 
 
 
-    @PostMapping("/createMessage")
+    @PostMapping
     public  ResponseEntity<Message> createMessage(@RequestBody Message message){
         messageService.createMessage(message);
         return  new ResponseEntity<Message>(HttpStatus.CREATED);
     }
 
-    @GetMapping("/receivedMessages")
-    public Page<Message>  receivedMessages(User user, Message message, Pageable pageable){
-      return messageService.receivedMessages(user, message, pageable);
+    @GetMapping("received")
+    public Page<Message>  receivedMessages(User user,  Message message, Recipients recipients, Bcc bcc, Cc cc, Pageable pageable){
+      return messageService.receivedMessages(user,message, recipients, bcc, cc, pageable);
 
 
 
     }
 
-    @GetMapping("/sentMessages")
+    @GetMapping("/sent")
     public Page<Message> sentMessages(User user, Message message, Pageable pageable){
         return  messageService.sentMessages(user, message, pageable);
 }
 
-    @GetMapping("/filterByLabel")
+    @GetMapping("/filter")
     public Page<Message> filterByLabel (@RequestParam("idLabel") Message message, Long idLabel , Pageable pageable){
         return messageService.filterByLabel(message, idLabel, pageable);
     }

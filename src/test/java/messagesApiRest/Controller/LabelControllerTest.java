@@ -43,7 +43,7 @@ class LabelControllerTest {
 
         verify(labelService, Mockito.times(1)).createLabel(label);
 
-        assertThat(result).isEqualTo( "label:" +label+ " saved");
+        assertThat(result).isEqualTo( "label saved");
     }
 
 

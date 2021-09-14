@@ -24,12 +24,7 @@ public  class Message {
     private String deriveFrom;
     @Column
     private String subject;
-    @Column
-    private String recipient;
-    @Column
-    private String cc;
-    @Column
-    private String bcc;
+
     @Column
     private String body;
     @Lob
@@ -48,7 +43,13 @@ public  class Message {
     private User user;
 
 
+    @ManyToOne
+    private Recipients recipient;
 
+    @ManyToOne
+    private Bcc bcc;
 
+    @ManyToOne
+    private  Cc cc;
 }
 

@@ -1,9 +1,7 @@
 package messagesApiRest.Service;
 
 
-import messagesApiRest.Domain.Label;
-import messagesApiRest.Domain.Message;
-import messagesApiRest.Domain.User;
+import messagesApiRest.Domain.*;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -12,7 +10,7 @@ public interface IMessageService {
 
     Message createMessage (Message message);
 
-    Page<Message> receivedMessages(User user, Message message, Pageable pageable);
+    Page<Message> receivedMessages(User user,  Message message, Recipients recipients, Bcc bcc, Cc cc, Pageable pageable);
 
     Page<Message> sentMessages(User user, Message message, Pageable pageable);
 

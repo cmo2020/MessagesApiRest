@@ -35,19 +35,8 @@ class SecurityConfigTest {
     @Autowired
     private AuthenticationManager authenticationManager;
 
-    @Test
-    @WithMockUser
-    void testConfigureBasicAuth() throws Exception {
-        mockMvc
-                .perform(post("/").with(httpBasic("user", "password")))
-                .andExpect(status().isNotFound()).andExpect(authenticated().withUsername("user"));
 
-    }
 
-    @Test
-    @Disabled
-    void testDaoAuthenticationProvider() {
-    }
 
     @Test
     void testEmptyPasswordEncoder() {
@@ -65,10 +54,5 @@ class SecurityConfigTest {
         assertThat(passwordEncoder.matches("password", result)).isFalse();
     }
 
-    @Test
-    @Disabled
-    void testConfigure() {
 
-
-    }
 }

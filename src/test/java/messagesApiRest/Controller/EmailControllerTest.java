@@ -1,7 +1,10 @@
 package messagesApiRest.Controller;
 
 
+import messagesApiRest.Domain.Bcc;
+import messagesApiRest.Domain.Cc;
 import messagesApiRest.Domain.Message;
+import messagesApiRest.Domain.Recipients;
 import messagesApiRest.Service.EmailServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -35,16 +38,20 @@ class EmailControllerTest {
     @Test
     void testSendMail() {
         Message message = new Message();
-        ResponseEntity<String> result = emailController.sendMail(message);
-        verify(emailService, times(1)).sendSimpleMessage(message);
+        Recipients recipients = new Recipients();
+        Bcc bcc = new Bcc();
+        Cc cc = new Cc();
+        ResponseEntity<String> result = emailController.sendMail(message, recipients,cc,bcc);
+        verify(emailService, times(1)).sendSimpleMessage(message, recipients, cc, bcc);
         assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
     }
 
     @Test
     void testSendAttachmentEmail() throws MessagingException {
         Message message = new Message();
-        ResponseEntity<String> result = emailController.sendAttachmentEmail(message);
-        verify(emailService, times(1)).sendMessageWithAttachment(message);
+        Recipients recipients = new Recipients();
+        ResponseEntity<String> result = emailController.sendAttachmentEmail(message, recipients);
+        verify(emailService, times(1)).sendMessageWithAttachment(message, recipients);
         assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
 
     }

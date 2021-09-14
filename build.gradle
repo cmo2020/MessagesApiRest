@@ -22,7 +22,6 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa:2.5.4'
 	implementation 'org.springframework.boot:spring-boot-starter-web:2.5.4'
 	compileOnly 'org.projectlombok:lombok:1.18.20'
-	runtimeOnly 'mysql:mysql-connector-java:8.0.25'
 	annotationProcessor 'org.projectlombok:lombok:1.18.20'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test:2.5.4'
 	implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.26'
@@ -34,7 +33,9 @@ dependencies {
 	testImplementation 'org.mockito:mockito-junit-jupiter:3.12.4'
 	testImplementation 'org.mockito:mockito-core:3.12.4'
 	testImplementation group: 'org.springframework.security', name: 'spring-security-test', version: '5.5.2'
-	implementation 'org.springframework.boot:spring-boot-starter-test:2.5.4'
+	implementation group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.11.2'
+	runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.11.2'
+	runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.11.2'
 
 }
 

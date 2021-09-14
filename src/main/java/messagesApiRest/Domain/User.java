@@ -59,7 +59,7 @@ public class User {
 
 
 
-     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+     @OneToMany( mappedBy = "user")
      private Set<Message> message = new HashSet<>();
 
 

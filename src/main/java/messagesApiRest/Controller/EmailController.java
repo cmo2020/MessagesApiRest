@@ -1,7 +1,10 @@
 package messagesApiRest.Controller;
 
 
+import messagesApiRest.Domain.Bcc;
+import messagesApiRest.Domain.Cc;
 import messagesApiRest.Domain.Message;
+import messagesApiRest.Domain.Recipients;
 import messagesApiRest.Service.EmailServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,14 +27,14 @@ public class EmailController {
     }
 
     @PostMapping("/send")
-    public ResponseEntity<String> sendMail(@RequestBody Message message) {
-        emailService.sendSimpleMessage(message);
+    public ResponseEntity<String> sendMail(@RequestBody Message message, Recipients recipients, Cc cc, Bcc bcc) {
+        emailService.sendSimpleMessage(message, recipients, cc, bcc);
         return new ResponseEntity<>("Email Sent successfully", HttpStatus.OK);
     }
 
     @PostMapping("/attachment")
-    public ResponseEntity<String> sendAttachmentEmail(@RequestBody Message message) throws MessagingException {
-        emailService.sendMessageWithAttachment(message);
+    public ResponseEntity<String> sendAttachmentEmail(@RequestBody Message message, Recipients recipients) throws MessagingException {
+        emailService.sendMessageWithAttachment(message, recipients);
         return new ResponseEntity<>("Attachment mail sent successfully", HttpStatus.OK);
     }
 }
