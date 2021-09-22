@@ -28,7 +28,7 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     private AuthenticationManager authenticationManager;
 
-    public AuthenticationFilter(AuthenticationManager authenticationManager) {
+    public AuthenticationFilter(String url, AuthenticationManager authenticationManager) {
         this.authenticationManager = authenticationManager;
     }
 
@@ -36,12 +36,11 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     public Authentication attemptAuthentication(HttpServletRequest req,
                                                 HttpServletResponse res) throws AuthenticationException {
         try {
-            CustomUserDetails customUserDetails = new ObjectMapper().readValue(req.getInputStream(), CustomUserDetails.class);
+           User user = new ObjectMapper().readValue(req.getInputStream(),User.class);
 
             return authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(customUserDetails.getUsername(),
-                            customUserDetails.getPassword(), new ArrayList<>())
-            );
+                    new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()
+            ));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
