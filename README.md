@@ -31,17 +31,3 @@ User should be logged to send and receive messages.
 4-Testing : You must reach at 80% of Unit Testing coverage in your solution.
 
 
-#ADVICE:
-The login authentication in the SecuritConf.Class is made with Basic Authentication by Spring Security, which it means that for every request credentials will be asked.
-In order to sing up a new User, it is required a change  in that piece of code, as it has done below. Afert the first user has been singed up it is recommended go back to the initial code.
-
- @Override
-    public void configure(HttpSecurity http) throws Exception {
-
-        http
-                .csrf().disable()
-                .authorizeRequests()
-                .anyRequest().permitAll().and().formLogin();
-
-
-    }
